@@ -1,0 +1,12 @@
+
+<!-- <p>{{eventos[0].Tema}}</p>
+<p>{{eventos[0].Local}}</p> -->
+
+<div class="container">
+   
+</div>
+<div *ngIf="eventos">
+    <p *ngFor="let evento of eventos">{{evento.local}} - {{evento.tema}}</p>
+   
+    <hr>
+</div>
