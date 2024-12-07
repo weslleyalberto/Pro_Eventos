@@ -1,12 +1,40 @@
 
-<!-- <p>{{eventos[0].Tema}}</p>
-<p>{{eventos[0].Local}}</p> -->
+<h2>Eventos</h2>
+<hr>
+<form action="" class="form-inline">
+    <div class="form-group mb-2">
+        <input type="text"
+        class="form-control mr-2"
+        placeholder="buscar">
+        <button class="btn btn-outline-success mt-2"
+        type="submit"
+        >Buscar</button>
+    </div>
+</form>
 
-<div class="container">
-   
-</div>
-<div *ngIf="eventos">
-    <p *ngFor="let evento of eventos">{{evento.local}} - {{evento.tema}}</p>
-   
-    <hr>
-</div>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr >
+            <th>#</th>
+            <th>Imagem</th>
+            <th>Tema</th>
+            <th>Local</th>
+            <th>Data</th>
+            <th>Qtd Pessoas</th>
+            <th>Lote</th>
+            <th>Opções</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let evento of eventos">
+            <td>{{evento.eventoId}}</td>
+            <td>{{evento.imageURL}}</td>
+            <td>{{evento.tema}}</td>
+            <td>{{evento.local}}</td>
+            <td>{{evento.dataEvento}}</td>
+            <td>{{evento.qtdPessoas}}</td>
+            <td>{{evento.lote}}</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
