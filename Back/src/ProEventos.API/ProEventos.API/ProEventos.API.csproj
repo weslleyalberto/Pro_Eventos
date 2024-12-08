@@ -25,4 +25,8 @@
     <Folder Include="models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\ProEventos.Persistence\ProEventos.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>

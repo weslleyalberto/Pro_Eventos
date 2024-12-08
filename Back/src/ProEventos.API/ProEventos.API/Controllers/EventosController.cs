@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ProEventos.API.Data;
-using ProEventos.API.Models;
+using ProEventos.Domain;
+using ProEventos.Persistence;
+
 
 namespace ProEventos.API.Controllers
 {
@@ -9,8 +10,8 @@ namespace ProEventos.API.Controllers
     [Route("api/[controller]")]
     public class EventosController : ControllerBase
     {
-        private readonly DataContext _context;
-        public EventosController(DataContext context)
+        private readonly ProEventosContext _context;
+        public EventosController(ProEventosContext context)
         {
             _context = context;
         }
@@ -24,7 +25,7 @@ namespace ProEventos.API.Controllers
         [HttpGet("{id:int}", Name = "GetEventoById")]
         public async  Task<Evento> GetById(int id)
         {
-            return await _context.Eventos.AsNoTracking().FirstOrDefaultAsync(x => x.EventoId == id);
+            return await _context.Eventos.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }
