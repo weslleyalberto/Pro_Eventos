@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 
 import { CollapseDirective } from 'ngx-bootstrap/collapse';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [	
     AppComponent,
@@ -23,8 +24,12 @@ import { CollapseDirective } from 'ngx-bootstrap/collapse';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
-    CollapseModule.forRoot()
+    HttpClientModule,  
+    BrowserAnimationsModule,
+    CollapseModule.forRoot(),
+    FormsModule
+  
+    
     // BrowserAnimationsModule,
     
     
