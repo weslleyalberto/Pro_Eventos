@@ -1,6 +1,12 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+
+import { Component, OnInit, TemplateRef } from '@angular/core';
+import { EventoService } from '../services/evento.service';
+import { Evento } from '../models/Evento';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ToastrService } from 'ngx-toastr';
+
+
+
 
 @Component({
   selector: 'app-eventos',
@@ -8,23 +14,44 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
   styleUrls: ['./eventos.component.scss'],
 })
 export class EventosComponent implements OnInit {
-  
+  modalRef?: BsModalRef;
+ 
   public eventos:any=[];
   readonly widthImage:number = 100;
   readonly marginImage = 2;
   mostrarImagem:boolean = true;
   private _filtroLista:string ="";
   public eventosFiltrados:any = [];
-  constructor(private http:HttpClient) { }
+  constructor(private eventoService:EventoService,
+    private modalService:BsModalService,
+    private toastr: ToastrService
+  ) {}
 
-  ngOnInit(): void {
+   
+   
+
+  public ngOnInit(): void {
     this.getEventos();
   }
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
+  }
+ 
+  confirm(): void {
+   
+    this.modalRef?.hide();
+    this.toastr.success('O evento foi deletado com sucesso.', 'Deletado!');
+  }
+ 
+  decline(): void {
+    
+    this.modalRef?.hide();
+  }
   public getEventos(){
-    this.http.get('https://localhost:5190/api/eventos')
+    this.eventoService.getEventos()
     .subscribe(
-        (response) =>{
-          this.eventos = response;
+        (_eventos:Evento[]) =>{
+          this.eventos = _eventos;
           this.eventosFiltrados = this.eventos;
          
         },
@@ -34,7 +61,7 @@ export class EventosComponent implements OnInit {
     );
    
   }
-  alterarImagem(){
+  public alterarImagem(){
     this.mostrarImagem = !this.mostrarImagem;
   }
   public get filtroLista():string{
@@ -45,7 +72,7 @@ export class EventosComponent implements OnInit {
     this.eventosFiltrados = this.filtroLista ? this.filtrarEventos(this.filtroLista):
     this.eventos;
   }
-  filtrarEventos(filtrarPor:string):any{
+  public filtrarEventos(filtrarPor:string):Evento[]{
     filtrarPor = filtrarPor.toLocaleLowerCase();
 
     return this.eventos.filter(
