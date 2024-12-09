@@ -8,7 +8,7 @@ import { PalestrantesComponent } from './components/palestrantes/palestrantes.co
 /**my imports */
 import { HttpClientModule } from '@angular/common/http';
 // import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { NavComponent } from './nav/nav.component';
+import { NavComponent } from './shared/nav/nav.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 
