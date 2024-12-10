@@ -10,7 +10,7 @@
       <small>{{subtitulo}}</small>
     </div>
       <div *ngIf="botaoListar">
-        <button class="btn btn-outline-light">Listar {{titulo}}</button>
+        <button class="btn btn-outline-light" (click)="listar()">Listar {{titulo}}</button>
       </div>
     
     </div>
