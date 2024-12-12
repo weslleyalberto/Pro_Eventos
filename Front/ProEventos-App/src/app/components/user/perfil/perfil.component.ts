@@ -17,6 +17,24 @@ export class PerfilComponent implements OnInit {
   ngOnInit() {
     this.validation();
   }
+  /**
+   * setForm($event){
+   * event.preventDefault();
+   * this.formRegistration.reset();}
+   */
+  public onSubmit(){
+    if(this.formRegistration.invalid){
+      console.log("Formulário inválido");
+      return;
+    }
+    else{
+      console.log("Formulário válido");
+    }
+  }
+  setForm(){
+  // event.preventDefault();
+  this.formRegistration.reset();
+  }
   validation(){
     const formOptions : AbstractControlOptions = {
       validators: ValidatorField.MustMatch('password','confirmPassword')
