@@ -60,7 +60,7 @@ import { RegistrationComponent } from './components/user/registration/registrati
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     ToastrModule.forRoot({
-      timeOut: 2000,
+      timeOut: 1000,
       positionClass: 'toast-bottom-right',
       preventDuplicates: true,
       progressBar: true

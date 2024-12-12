@@ -27,4 +27,7 @@ export class EventoDetalheComponent implements OnInit {
       email:  ['', [Validators.required,Validators.email]]
     });
   }
+  resetForm(){
+    this.form.reset();
+  }
 }
