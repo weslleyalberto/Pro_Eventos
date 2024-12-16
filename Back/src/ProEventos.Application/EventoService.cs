@@ -29,7 +29,7 @@ namespace ProEventos.Application
                 _geralPersist.Add<Evento>(evento);
                 if(await _geralPersist.SaveChangesAsync())
                 {
-                    var eventoP = await _eventoPersist.GetEventoByIdAsync(model.Id, false);
+                    var eventoP = await _eventoPersist.GetEventoByIdAsync(evento.Id, false);
                     return _mapper.Map<EventoDto>(eventoP);
                 }
                 return null;
@@ -47,10 +47,11 @@ namespace ProEventos.Application
                 var evento  = await _eventoPersist.GetEventoByIdAsync(eventoId, false);
                 if (evento is null) return null;
                 model.Id = eventoId;
-                _geralPersist.Update(model);
+                var eventoModel = _mapper.Map<Evento>(model);
+                _geralPersist.Update(eventoModel);
                 if (await _geralPersist.SaveChangesAsync())
                 {
-                    var eventoP = await _eventoPersist.GetEventoByIdAsync(model.Id, false);
+                    var eventoP = await _eventoPersist.GetEventoByIdAsync(evento.Id, false);
                     return _mapper.Map<EventoDto>(eventoP);
                 }
                 return null;
