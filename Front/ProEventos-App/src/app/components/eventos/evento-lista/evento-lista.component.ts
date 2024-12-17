@@ -13,7 +13,8 @@ import { EventoService } from 'src/app/services/evento.service';
 })
 export class EventoListaComponent implements OnInit {
   modalRef?: BsModalRef;
- 
+  eventoId!: number;
+  evento!:Evento;
   public eventos:any=[];
   readonly widthImage:number = 100;
   readonly marginImage = 2;
@@ -39,7 +40,14 @@ export class EventoListaComponent implements OnInit {
       this.spinner.hide();
     }, 2000);
   }
-  openModal(template: TemplateRef<any>) {
+  openModal(event:any,template: TemplateRef<any>, eventoId: number) {
+    event.stopPropagation();
+    this.eventoId = eventoId;
+    //Codigo API 
+    this.eventoService.getEventById(eventoId).subscribe(
+      (evento) =>  this.evento =  {...evento},
+      (error) => console.log(error)
+    );
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
  
