@@ -14,7 +14,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class EventoDetalheComponent implements OnInit {
   form!:FormGroup;
-  evento!:Evento;;
+  evento!:Evento;
+  estadoSalvar:string='post';
   get f():any{
     return this.form.controls;
   }
@@ -37,10 +38,35 @@ export class EventoDetalheComponent implements OnInit {
   ) { 
     this.localeService.use('pt-br');
   }
+  salvarAlteracao(){
+    this.spinner.show();
+    if(this.form.valid){
+     console.log(this.estadoSalvar);
+     this.evento = (this.estadoSalvar == 'post') ? this.evento = {... this.form.value} 
+     : this.evento = {id: this.evento.id ,... this.form.value};
+      
+      this.eventoService[this.estadoSalvar](this.evento).subscribe(
+        () =>{
+          this.toaster.success('Evento salvo com sucesso!',"Sucesso!");
+        },
+        (error:any) => {
+              console.log(error);
+              this.spinner.hide();
+              this.toaster.error('Erro ao tentar salvar evento','error!');
+        },
+        () => {
+          this.spinner.hide();
+        }
+      )  
+    }
+  }
   carregarEvento(){
     const  eventoIdParam = this.router.snapshot.paramMap.get('id');
     this.spinner.show();
+
+    
     if(eventoIdParam !== null ){
+      this.estadoSalvar = 'put';
       this.eventoService.getEventById(+eventoIdParam)
       .subscribe(
         (evento:Evento) => {
@@ -53,8 +79,13 @@ export class EventoDetalheComponent implements OnInit {
         },
         () => {this.spinner.hide();}
       );
-
+      
     }
+    else{
+      this.spinner.hide();
+      console.log('Evento não encontrado');
+    }
+    
   }
   ngOnInit(): void {
     this.validation();
@@ -66,7 +97,7 @@ export class EventoDetalheComponent implements OnInit {
       dataEvento:  ['', [Validators.required]],
       tema:  ['', [Validators.required,Validators.minLength(4),Validators.maxLength(50)]],
       qtdPessoas:  ['', [Validators.required,Validators.max(120000)]],
-      imagemURL:  ['', [Validators.required]],
+      imageURL:  ['', [Validators.required]],
       telefone:  ['', [Validators.required]],
       email:  ['', [Validators.required,Validators.email]]
     });

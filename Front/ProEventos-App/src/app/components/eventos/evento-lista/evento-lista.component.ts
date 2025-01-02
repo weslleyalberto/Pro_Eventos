@@ -32,7 +32,7 @@ export class EventoListaComponent implements OnInit {
    
 
   public ngOnInit(): void {
-    this.getEventos();
+    this.carregarEventos();
     this.spinner.show();
 
     setTimeout(() => {
@@ -52,16 +52,33 @@ export class EventoListaComponent implements OnInit {
   }
  
   confirm(): void {
-   
     this.modalRef?.hide();
-    this.toastr.success('O evento foi deletado com sucesso.', 'Deletado!');
-  }
+    this.spinner.show();
+
+    this.eventoService.deleteEvento(this.eventoId).subscribe(
+      (result) => { // Callback de sucesso
+           console.log(result);
+          this.toastr.success('O evento foi deletado com sucesso.', 'Deletado!');
+          this.carregarEventos();
+        
+       
+      },
+      (error) => { // Callback de erro
+        this.toastr.error(`Erro ao deletar eventoId: ${this.eventoId}`, 'Erro!');
+        console.log(error);
+        
+      }
+    ).add(() => this.spinner.hide());
+   
+
+    
+}
  
   decline(): void {
     
     this.modalRef?.hide();
   }
-  getEventos(){
+  carregarEventos(){
     this.eventoService.getEventos()
     .subscribe(
         (_eventos:Evento[]) =>{

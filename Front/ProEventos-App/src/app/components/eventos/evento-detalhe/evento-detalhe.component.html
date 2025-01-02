@@ -56,9 +56,9 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label>Imagem</label>
-                    <input type="text" class="form-control is-invalid" formControlName="imagemURL" placeholder="Image"
-                    [ngClass]="cssValitador(f.imagemURL)">
-                    <div class="invalid-feedback" *ngIf="f.imagemURL.errors?.required"> Imagem é obrigatório</div>
+                    <input type="text" class="form-control is-invalid" formControlName="imageURL" placeholder="Image"
+                    [ngClass]="cssValitador(f.imageURL)">
+                    <div class="invalid-feedback" *ngIf="f.imageURL.errors?.required"> Imagem é obrigatório</div>
                 </div>
             </div>
         </div>
@@ -67,7 +67,7 @@
                 <button class="btn btn-outline-secondary mr-auto border" (click)="resetForm()">
                     Cancelar Alteração
                 </button>
-                <button class="btn btn-success" [disabled]="!form.valid">
+                <button class="btn btn-success" [disabled]="!form.valid" (click)="salvarAlteracao()">
                     <!-- <span class="spinner-border spinner-border-sm mr-1"></span> -->
                     Salvar Evento
                 </button>

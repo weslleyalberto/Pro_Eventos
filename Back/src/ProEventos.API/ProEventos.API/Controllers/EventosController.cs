@@ -95,7 +95,7 @@ namespace ProEventos.API.Controllers
             try
             {
                 var deletado = await _context.DeleteEvento(id);
-                if(deletado) return Ok("Deletado com sucesso.");
+                if(deletado) return Ok( new {message = "Deletado"});
                 else return BadRequest("Erro ao deletar evento.");
             }
             catch (Exception ex)
