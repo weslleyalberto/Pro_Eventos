@@ -13,6 +13,8 @@ builder.Services.AddDbContext<ProEventosContext>(options => {
 builder.Services.AddScoped<IEventoPersist, EventoPersist>();
 builder.Services.AddScoped<IGeralPersist, GeralPersist>();
 builder.Services.AddScoped<IEventoService, EventoService>();
+builder.Services.AddScoped<ILotePersist, LotePersist>();
+builder.Services.AddScoped<ILoteService, LoteService>();
 builder.Services.AddControllers().AddNewtonsoftJson( x=> x.SerializerSettings.ReferenceLoopHandling
 = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
