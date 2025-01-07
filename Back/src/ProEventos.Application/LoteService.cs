@@ -124,7 +124,7 @@ namespace ProEventos.Application
             {
                 var lote = _mapper.Map<Lote>(model);
                 model.EventoId = eventoId;
-                
+                lote.EventoId = eventoId;
                 _geralPersist.Update<Lote>(lote);
                 await _geralPersist.SaveChangesAsync();
             }
