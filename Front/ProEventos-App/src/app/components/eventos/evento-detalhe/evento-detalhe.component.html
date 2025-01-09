@@ -2,13 +2,15 @@
 
 <div class="card rounded shadow-sm">
     <form  [formGroup]="form" >
-        <!-- <p>Form value: {{form.value |json}}</p>
+        <!-- <p>Form value: {{form.controls.lotes.value|json}}</p>
         <p>Form valid : {{form.status}}</p> -->
         <div class="p-3">
             <div class="form-row">
                 <div class="form-group col-md-12">
                     <label>Tema</label>
-                    <input type="text" class="form-control is-invalid" formControlName="tema" placeholder="Insira o Tema"
+                    <input type="text" class="form-control is-invalid" 
+                    formControlName="tema"
+                     placeholder="Insira o Tema"
                     [ngClass]="cssValitador(f.tema)">
                     <div *ngIf="f.tema.errors?.required" class="invalid-feedback">Tema é obrigatório</div>
                     <div *ngIf="f.tema.errors?.minlength" class="invalid-feedback">Tema  tem que ter no mínimo 4 caracteres</div>
@@ -25,7 +27,8 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label>Data e Hora</label>
-                    <input type="datetime" class="form-control is-invalid" formControlName="dataEvento" 
+                    <input type="datetime" class="form-control is-invalid" 
+                    formControlName="dataEvento" 
                     [ngClass]="cssValitador(f.dataEvento)" bsDatepicker 
                     [bsConfig]="bsConfig">
                     <div class="invalid-feedback" *ngIf="f.dataEvento.errors?.required">Data e Hora são obrigatórios</div>
@@ -91,12 +94,16 @@
         <div class="col" [formGroup]="form" >
           <div formArrayName="lotes" *ngFor="let lote of lotes.controls; let i=index">
             <fieldset class="form-group" [formGroupName]="i">
+              <p>Form Value: {{i | json}}</p>
+                <p>form valid: {{form.controls.lotes.valid}}</p>
               <legend class="d-flex justify-content-between capitalize">
+                <span>ID: {{ lote.get('id')?.value }}</span>
                 <button class="p-2 btn btn-sm btn-outline-warning mb-1 d-flex"
                   tooltip="Excluir Lote"
                   [adaptivePosition]="false"
                   [delay]="500"
-                  placement="left">
+                  placement="left"
+                  (click)="excluirLote(template,i)">
                 <i class="fa fa-window-close my-1"></i>
                 <b class="ml-1 d-none d-sm-block">Excluir</b>
               </button>
@@ -127,13 +134,18 @@
                 <input type="text" class="form-control" 
                 formControlName="dataInicio" 
                 placeholder="01/01/2019"
-                [ngClass]="cssValitador(lotes.get(i+'.dataInicio'))">
+                [ngClass]="cssValitador(lotes.get(i+'.dataInicio'))"
+                bsDatepicker 
+                    [bsConfig]="bsConfigLote">
               </div>
               <div class="form-group col-md-4">
                 <label>Data Fim</label>
                 <input type="text" class="form-control" 
                 formControlName="dataFim" placeholder="01/01/2019"
-                [ngClass]="cssValitador(lotes.get(i+'.dataFim'))">
+                [ngClass]="cssValitador(lotes.get(i+'.dataFim'))" 
+                bsDatepicker 
+               
+                    [bsConfig]="bsConfigLote">
               </div>
             </div>
           </fieldset>
@@ -157,7 +169,20 @@
     </div>
   </div>
 </div>
+
 <br>
+<ng-template #template>
+  <div class="modal-body text-center">
+    <p>Tem certeza que deseja deletar o Lote </p>
+    <div class="container" id="container-modal">
+      <p>ID: {{loteAtual?.id}}</p>
+      <p>Tema: {{loteAtual?.nome}}</p>
+      <!-- <p>Local: {{loteAtual?.indice}}</p> -->
+    </div>
+    <button type="button" class="btn btn-default" (click)="confirmDeleteLote()" >Sim</button>
+    <button type="button" class="btn btn-primary" (click)="declineDeleteLote()" >Não</button>
+  </div>
+</ng-template>
 
 
 
