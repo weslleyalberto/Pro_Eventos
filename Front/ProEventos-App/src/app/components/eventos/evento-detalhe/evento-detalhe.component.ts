@@ -168,7 +168,7 @@ export class EventoDetalheComponent implements OnInit {
      
       id:[lote.id],
       nome:[lote.nome,Validators.required],
-      preco:[lote.quantidade,Validators.required],
+      preco:[lote.preco,Validators.required],
       dataInicio:[lote.dataInicio],
       dataFim:[lote.dataFim],
       quantidade:[lote.quantidade,[Validators.required,Validators.min(5), Validators.max(250)]],
@@ -181,8 +181,9 @@ export class EventoDetalheComponent implements OnInit {
     return {'is-invalid': campoForm?.errors && campoForm?.touched};
   }
   salvarLotes(){
-    this.spinner.show();
+    
     if(this.form.controls.lotes.valid){
+      this.spinner.show();
       this.loteService.saveLote(this.evento.id,this.form.value.lotes).subscribe(
         () => {
             this.toaster.success('Lotes salvos com sucesso!','Sucesso!');
@@ -199,12 +200,19 @@ export class EventoDetalheComponent implements OnInit {
    this.loteAtual.id = this.lotes.get(index + '.id')?.value;
    this.loteAtual.nome = this.lotes.get(index + '.nome')?.value;
    this.loteAtual.indice = index;
-
-
-
     this.modalRef = this.modalService.show(template,{class:'modal-sm'});
     
   }
+  retornaTitleLote(index:number) : string | null{
+     let nomeLote = this.lotes.get(index + '.nome')?.value;
+     if(nomeLote == null || nomeLote == ''){
+      return "Lote";
+     }
+     else{
+      return nomeLote;
+     }
+  }
+
   confirmDeleteLote(){
       this.modalRef?.hide();
      

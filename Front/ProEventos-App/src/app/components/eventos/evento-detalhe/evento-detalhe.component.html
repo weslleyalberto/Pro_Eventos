@@ -94,10 +94,13 @@
         <div class="col" [formGroup]="form" >
           <div formArrayName="lotes" *ngFor="let lote of lotes.controls; let i=index">
             <fieldset class="form-group" [formGroupName]="i">
-              <p>Form Value: {{i | json}}</p>
-                <p>form valid: {{form.controls.lotes.valid}}</p>
+              <!-- <span>{{lote.get('nome')?.value}}</span> -->
+                <!-- <p>form valid: {{form.controls.lotes.valid}}</p> -->
               <legend class="d-flex justify-content-between capitalize">
-                <span>ID: {{ lote.get('id')?.value }}</span>
+                <span>{{ 
+                  retornaTitleLote(i)
+                                
+                }}</span>
                 <button class="p-2 btn btn-sm btn-outline-warning mb-1 d-flex"
                   tooltip="Excluir Lote"
                   [adaptivePosition]="false"
@@ -124,10 +127,13 @@
               </div>
               <div class="form-group col-md-4">
                 <label>Preço</label>
-                <input type="text" currencyMask 
+                <input type="text"  
                 class="form-control" formControlName="preco" 
+                currencyMask
+              
                 placeholder="R$ 0,00"
             [ngClass]="cssValitador(lotes.get(i+'.preco'))">
+          
               </div>
               <div class="form-group col-md-4">
                 <label>Data Início</label>
@@ -162,7 +168,7 @@
       <button class="btn btn-outline-secondary mr-auto border">
         Cancelar Alteração
       </button>
-      <button class="btn btn-success" (click)="salvarLotes()" >
+      <button class="btn btn-success" (click)="salvarLotes()" [disabled]="!form.controls.lotes.valid">
 
         Salvar Lotes
       </button>

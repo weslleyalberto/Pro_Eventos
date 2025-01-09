@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { NgxCurrencyModule ,CurrencyMaskInputMode  } from 'ngx-currency';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EventosComponent } from './components/eventos/eventos.component';
@@ -36,6 +36,19 @@ import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
 import { LoteService } from './services/lote.service';
 defineLocale('pt-br', ptBrLocale);
+
+export const customCurrencyMaskConfig = {
+  align: "right",
+  allowNegative: false,
+  allowZero: false,
+  decimal: ",",
+  precision: 2,
+  prefix: "R$ ",
+  suffix: "",
+  thousands: ".",
+  nullable: true
+};
+
 @NgModule({
   declarations: [	
     AppComponent,
@@ -73,6 +86,9 @@ defineLocale('pt-br', ptBrLocale);
     }),
     NgxSpinnerModule,
     BsDatepickerModule.forRoot(),
+    NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+   
+    
   
     
     // BrowserAnimationsModule,
@@ -81,7 +97,8 @@ defineLocale('pt-br', ptBrLocale);
   ],
   providers: [
     EventoService,
-    LoteService
+    LoteService,
+   
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
