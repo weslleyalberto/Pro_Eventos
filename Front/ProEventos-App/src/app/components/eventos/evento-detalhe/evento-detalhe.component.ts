@@ -204,6 +204,7 @@ export class EventoDetalheComponent implements OnInit {
     
   }
   retornaTitleLote(index:number) : string | null{
+
      let nomeLote = this.lotes.get(index + '.nome')?.value;
      if(nomeLote == null || nomeLote == ''){
       return "Lote";
@@ -215,13 +216,13 @@ export class EventoDetalheComponent implements OnInit {
 
   confirmDeleteLote(){
       this.modalRef?.hide();
-     
-      this.spinner.show();
+        this.spinner.show();
 
       this.loteService.deleteLote(this.eventoId,this.loteAtual.id).subscribe(
         () => {
+          
               this.toaster.success('Lote excluido com sucesso!','Sucesso!');  
-              this.lotes.removeAt(this.loteAtual.indice);
+              // this.lotes.removeAt(this.loteAtual.indice);
         },
         (error) => {
            
@@ -229,6 +230,7 @@ export class EventoDetalheComponent implements OnInit {
             console.log(error);
         }
       ).add(() => this.spinner.hide());
+      this.lotes.removeAt(this.loteAtual.indice);
   }
   declineDeleteLote(){
     this.modalRef?.hide();
