@@ -22,6 +22,7 @@ export class EventoDetalheComponent implements OnInit {
   eventoId!:number;
   estadoSalvar:string='post';
   estadoSalvado!:boolean;
+  imagemURL = 'assets/upload.png';
   loteAtual = { id:0, nome:'',indice:0};
   constructor(private fb:FormBuilder,
     private localeService: BsLocaleService,
