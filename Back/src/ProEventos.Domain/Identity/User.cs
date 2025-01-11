@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ProEventos.Domain.Enum;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProEventos.Domain.Identity
 {
@@ -12,5 +13,7 @@ namespace ProEventos.Domain.Identity
         public Funcao Funcao { get; set; }
         public string ImagemPErfil { get; set; }
         public IEnumerable<UserRole> UserRoles { get; set; }
+        [NotMapped]
+        public string NomeCompleto { get => PrimeiroNome + UltimoNome; }
     }
 }
