@@ -12,6 +12,7 @@
               <input type="text" class="form-control is-invalid" 
               formControlName="tema"
               placeholder="Insira o Tema"
+              [(ngModel)]="evento.tema"
               [ngClass]="cssValitador(f.tema)">
               <div *ngIf="f.tema.errors?.required" class="invalid-feedback">Tema é obrigatório</div>
               <div *ngIf="f.tema.errors?.minlength" class="invalid-feedback">Tema  tem que ter no mínimo 4 caracteres</div>
@@ -22,6 +23,7 @@
             <div class="form-group col-md-8">
               <label>Local</label>
               <input type="text" class="form-control is-invalid" 
+              [(ngModel)]="evento.local"
               [ngClass]="cssValitador(f.local)"
               formControlName="local" placeholder="">
               <div class="invalid-feedback" *ngIf="f.local.errors?.required">Local é obrigatório</div>
@@ -30,6 +32,7 @@
               <label>Data e Hora</label>
               <input type="datetime" class="form-control is-invalid" 
               formControlName="dataEvento" 
+             [(ngModel)]="evento.dataEvento"
               [ngClass]="cssValitador(f.dataEvento)" bsDatepicker 
               [bsConfig]="bsConfig">
               <div class="invalid-feedback" *ngIf="f.dataEvento.errors?.required">Data e Hora são obrigatórios</div>
@@ -40,30 +43,34 @@
               <label>Qtd Pessoas</label>
               <input type="text" class="form-control is-invalid is-invalid" 
               formControlName="qtdPessoas" placeholder="" 
+              [(ngModel)]="evento.qtdPessoas"
               [ngClass]="cssValitador(f.qtdPessoas)">
               <div class="invalid-feedback" *ngIf="f.qtdPessoas.errors?.required">Qtd de Pessoas é obrigatório</div>
               <div class="invalid-feedback" *ngIf="f.qtdPessoas.errors?.max">Qtd de Pessoas Máxima é 120000 pessoas</div>
             </div>
             <div class="form-group col-md-2">
               <label>Telefone</label>
-              <input type="text" class="form-control is-invalid" formControlName="telefone" placeholder="(000) 90000-0000"
+              <input type="text" class="form-control is-invalid" 
+              formControlName="telefone" placeholder="(000) 90000-0000"
+              [(ngModel)]="evento.telefone"
               [ngClass]="cssValitador(f.telefone)">
               <div class="invalid-feedback" *ngIf="f.telefone.errors?.required">Telefone é obrigatório</div>
             </div>
             <div class="form-group col-md-4">
               <label>Email</label>
-              <input type="text" class="form-control is-invalid" formControlName="email" placeholder="e-mail"
-              
+              <input type="text" 
+              class="form-control is-invalid" formControlName="email" placeholder="e-mail"
+              [(ngModel)]="evento.email"
               [ngClass]="cssValitador(f.email)">
               <div class="invalid-feedback" *ngIf="f.email.errors?.required">Email é obrigatório</div>
               <div class="invalid-feedback" *ngIf="f.email.errors?.email">Digite um e-mail válido</div>
             </div>
-            <div class="form-group col-md-4">
+            <!-- <div class="form-group col-md-4">
               <label>Imagem</label>
-              <input type="text" class="form-control is-invalid" formControlName="imageURL" placeholder="Image"
+              <input type="text" class="form-control is-invalid"  formControlName="imageURL" placeholder="Image"
               [ngClass]="cssValitador(f.imageURL)">
               <div class="invalid-feedback" *ngIf="f.imageURL.errors?.required"> Imagem é obrigatório</div>
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="card-footer">
@@ -181,7 +188,9 @@
   <div [formGroup]="form" class="card-evento-view shadow-sm">
     <div class="form-row">
       <div class="form-group m-0">
-        <input type="file" #file  class="form-control is-invalid" placeholder="" style="display: none">
+        <input type="file" #file  
+        class="form-control is-invalid" placeholder="" (change)="onFileChange($event)"
+        style="display: none">
       </div>
     </div>
     <div class="card profile-card-2">
@@ -196,7 +205,7 @@
         <p class="card-text">
           <b>Local:</b> {{evento.local}}
           <br>
-          <b>Data:</b> {{evento.dataEvento }}
+          <b>Data:</b> {{dataFormatada(evento.dataEvento) }}
         </p>
         <hr>
         <p class="card-text">

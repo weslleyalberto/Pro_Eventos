@@ -24,6 +24,7 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="models\" />
+    <Folder Include="Resources\Images\" />
   </ItemGroup>
 
   <ItemGroup>

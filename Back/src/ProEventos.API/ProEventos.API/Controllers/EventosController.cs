@@ -91,6 +91,7 @@ namespace ProEventos.API.Controllers
                     DeleteImage(evento.ImageURL);
                     evento.ImageURL = await SaveImage(file);
                 }
+              
                 var eventoRetorno = await _context.Update(eventoId, evento);
                 return Ok(eventoRetorno);
             }
@@ -130,7 +131,7 @@ namespace ProEventos.API.Controllers
         [NonAction]
         private void DeleteImage(string imageName)
         {
-            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, @"Resources/Images", imageName);
+            var imagePath = Path.Combine(_hostEnvironment.ContentRootPath, @"Resources\Images", imageName);
             if (System.IO.File.Exists(imagePath))
             {
                 System.IO.File.Delete(imagePath);
@@ -142,7 +143,7 @@ namespace ProEventos.API.Controllers
             string imageName = new String( Path.GetFileNameWithoutExtension(imageFile.Name)
                 .Take(10).ToArray()).Replace(' ','-');
             //mascara do vinícios yymmssfff
-            imageName = $"{imageName}{DateTime.UtcNow.ToString("ddMMyyyy:hh:mm:ss")}{Path.GetExtension(imageFile.FileName)}";
+            imageName = $"{imageName}{DateTime.UtcNow.ToString("yymmssfff")}{Path.GetExtension(imageFile.FileName)}";
             var imagePAth = Path.Combine(_hostEnvironment.ContentRootPath, @"Resources/Images", imageName);
             using(var fileStream = new FileStream(imagePAth, FileMode.Create))
             {

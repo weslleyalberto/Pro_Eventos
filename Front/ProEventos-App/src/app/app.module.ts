@@ -31,7 +31,7 @@ import { UserComponent } from './components/user/user.component';
 import { LoginComponent } from './components/user/login/login.component';
 import { RegistrationComponent } from './components/user/registration/registration.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
-
+import { CommonModule, DatePipe } from '@angular/common';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { ptBrLocale } from 'ngx-bootstrap/locale';
 import { LoteService } from './services/lote.service';
@@ -87,6 +87,7 @@ export const customCurrencyMaskConfig = {
     NgxSpinnerModule,
     BsDatepickerModule.forRoot(),
     NgxCurrencyModule.forRoot(customCurrencyMaskConfig),
+    CommonModule
    
     
   
@@ -98,6 +99,7 @@ export const customCurrencyMaskConfig = {
   providers: [
     EventoService,
     LoteService,
+    DatePipe
    
   ],
   bootstrap: [AppComponent],

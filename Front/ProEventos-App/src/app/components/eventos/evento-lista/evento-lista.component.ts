@@ -27,14 +27,14 @@ export class EventoListaComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private router:Router
   ) {}
-
-   
-   
-
+  
+  
+  
+  
   public ngOnInit(): void {
     this.carregarEventos();
     this.spinner.show();
-
+    
     setTimeout(() => {
       /** spinner ends after 5 seconds */
       this.spinner.hide();
@@ -50,18 +50,26 @@ export class EventoListaComponent implements OnInit {
     );
     this.modalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
- 
+  // public imageURL(idEvento:number){
+  //   const baseURL = 'https://localhost:7280/resources/images/';
+  //   if(this.evento.imageURL === null || this.evento.imageURL === ''){
+  //     return baseURL + '../../../../assets/upload.png';
+  //   }
+  //   else{
+  //     return baseURL + this.evento.imageURL;
+  //   }
+  // }
   confirm(): void {
     this.modalRef?.hide();
     this.spinner.show();
-
+    
     this.eventoService.deleteEvento(this.eventoId).subscribe(
       (result) => { // Callback de sucesso
-           console.log(result);
-          this.toastr.success('O evento foi deletado com sucesso.', 'Deletado!');
-          this.carregarEventos();
+        console.log(result);
+        this.toastr.success('O evento foi deletado com sucesso.', 'Deletado!');
+        this.carregarEventos();
         
-       
+        
       },
       (error) => { // Callback de erro
         this.toastr.error(`Erro ao deletar eventoId: ${this.eventoId}`, 'Erro!');
@@ -69,11 +77,11 @@ export class EventoListaComponent implements OnInit {
         
       }
     ).add(() => this.spinner.hide());
-   
-
     
-}
- 
+    
+    
+  }
+  
   decline(): void {
     
     this.modalRef?.hide();
@@ -81,21 +89,35 @@ export class EventoListaComponent implements OnInit {
   carregarEventos(){
     this.eventoService.getEventos()
     .subscribe(
-        (_eventos:Evento[]) =>{
-          this.eventos = _eventos;
-          this.eventosFiltrados = this.eventos;
+      (_eventos:Evento[]) =>{
+        const eventoInterno =this.eventoInterno(_eventos);
          
-        },
-       (error) =>{
+        this.eventos= eventoInterno;
+        this.eventosFiltrados = this.eventos;
+        
+      },
+      (error) =>{
         console.log(error)
         this.spinner.hide();
         this.toastr.error("Erro ao carregar eventos", "Erro")
-       },
+      },
       
       //  () => this.spinner.hide()
-       
+      
     );
-   
+    
+  }
+  private eventoInterno(eventos:Evento[]):Evento[]{
+    eventos.forEach((evento) => {
+      if(evento.imageURL === null || evento.imageURL === ''){
+         evento.imageURL = '../../../../assets/upload.png';
+      }
+      else{
+        evento.imageURL = `https://localhost:7280/resources/images/${evento.imageURL}`;
+      }
+      
+    });
+    return eventos;
   }
   public alterarImagem(){
     this.mostrarImagem = !this.mostrarImagem;
@@ -110,7 +132,7 @@ export class EventoListaComponent implements OnInit {
   }
   public filtrarEventos(filtrarPor:string):Evento[]{
     filtrarPor = filtrarPor.toLocaleLowerCase();
-
+    
     return this.eventos.filter(
       (      evento: { tema: string; local: string; }) => evento.tema.toLocaleLowerCase().indexOf(filtrarPor) !== -1 ||
       evento.local.toLocaleLowerCase().indexOf(filtrarPor) !== -1
@@ -119,5 +141,5 @@ export class EventoListaComponent implements OnInit {
   detalheEvento(id:number){
     this.router.navigate([`eventos/detalhe/${id}`]);
   }
-
+  
 }

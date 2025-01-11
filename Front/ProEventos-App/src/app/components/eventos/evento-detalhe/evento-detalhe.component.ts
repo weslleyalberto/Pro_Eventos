@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,6 +24,7 @@ export class EventoDetalheComponent implements OnInit {
   estadoSalvar:string='post';
   estadoSalvado!:boolean;
   imagemURL = 'assets/upload.png';
+  file!:FileList;
   loteAtual = { id:0, nome:'',indice:0};
   constructor(private fb:FormBuilder,
     private localeService: BsLocaleService,
@@ -32,7 +34,8 @@ export class EventoDetalheComponent implements OnInit {
     private toaster:ToastrService,
     private router:Router,
     private loteService: LoteService,
-    private modalService:BsModalService
+    private modalService:BsModalService,
+    private datePipe:DatePipe
     
   ) { 
     this.localeService.use('pt-br');
@@ -74,7 +77,34 @@ export class EventoDetalheComponent implements OnInit {
     return this.form.get('lotes') as FormArray;
   }
 
- 
+  onFileChange(ev: any){
+    
+      
+      const reader = new FileReader();
+      reader.onload = (event:any) => this.imagemURL = event.target.result;
+    this.file = ev.target.files as FileList;
+    // this.file = t[0];
+    reader.readAsDataURL(this.file[0]);
+    this.uploadImage();
+    // const reader = new FileReader();
+    // this.file = ev.target.files;
+    // reader.readAsDataURL(this.file[0]);
+  }
+  uploadImage(){
+      this.spinner.show();
+      this.eventoService.postUpload(this.eventoId,this.file).subscribe(
+        () => {
+          this.carregarEvento();
+          this.toaster.success('Imagem salva com sucesso!','Sucesso!');
+
+
+        },
+        (error) => {
+              this.toaster.error('Erro ao tentar upload imagem','Erro!');
+              console.log(error);
+        }
+      ).add(() => this.spinner.hide());
+  }
   salvarEvento(){
     this.spinner.show();
     if(this.form.valid){
@@ -100,12 +130,13 @@ export class EventoDetalheComponent implements OnInit {
     }
   }
   carregarEvento(){
+    this.spinner.show();
     this.eventoId = this.activatedRoute.snapshot.paramMap.get('id') as any;
     
     
 
     console.log(this.eventoId);
-    this.spinner.show();
+   
 
     
     if(this.eventoId !== null  && this.eventoId !== 0){
@@ -116,6 +147,7 @@ export class EventoDetalheComponent implements OnInit {
           this.evento =   {... evento};
           this.form.patchValue(this.evento);
           this.carregarLotes(evento.lotes);
+          this.imageUrl(this.evento);
         },
         (error:any) => {console.log(error);
           this.spinner.hide();
@@ -138,7 +170,7 @@ export class EventoDetalheComponent implements OnInit {
       dataEvento:  ['', [Validators.required]],
       tema:  ['', [Validators.required,Validators.minLength(4),Validators.maxLength(50)]],
       qtdPessoas:  ['', [Validators.required,Validators.max(120000)]],
-      imageURL:  ['', [Validators.required]],
+      imageURL:  ['', ],
       telefone:  ['', [Validators.required]],
       email:  ['', [Validators.required,Validators.email]],
       lotes :this.fb.array([]),
@@ -214,6 +246,14 @@ export class EventoDetalheComponent implements OnInit {
       return nomeLote;
      }
   }
+   imageUrl(evento:Evento){
+    if(evento.imageURL != null && evento.imageURL != '' ){
+        this.imagemURL =  "https://localhost:7280/resources/images/" + evento.imageURL;
+        
+        console.log("Imagem URL: " + evento.imageURL);
+    }
+  
+  }
 
   confirmDeleteLote(){
       this.modalRef?.hide();
@@ -262,5 +302,8 @@ export class EventoDetalheComponent implements OnInit {
             
     
   // }
+  public dataFormatada(data:any):string{
+    return this.datePipe.transform(data ,'dd/MM/yyyy hh:mm a')  ?? '';
+  }
   
 }
