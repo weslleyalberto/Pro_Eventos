@@ -17,7 +17,7 @@ namespace ProEventos.Persistence
         public DbSet<Palestrante> Palestrantes { get; set; }
         public DbSet<PalestranteEvento> PalestrantesEventos { get; set; }
         public DbSet<RedeSocial> RedesSociais { get; set; }
-        public DbSet<UserRole> UserRoles { get; set; }
+        //public DbSet<UserRole> UserRoles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
