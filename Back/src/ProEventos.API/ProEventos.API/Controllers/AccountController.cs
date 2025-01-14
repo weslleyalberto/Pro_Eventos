@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ProEventos.API.Extensions;
 using ProEventos.Application.Contratos;
 using ProEventos.Application.Dtos;
+using System.Security.Claims;
 
 namespace ProEventos.API.Controllers
 {
@@ -18,13 +20,14 @@ namespace ProEventos.API.Controllers
             _accountService = accountService;
             _tokenService = tokenService;
         }
-        [HttpGet("GetUser/{userName}")]
+        [HttpGet("GetUser")]
         //[AllowAnonymous]
-        public async Task<ActionResult> GetUser(string userName)
+        public async Task<ActionResult> GetUser()
         {
             try
             {
-                var user = await _accountService.GetUserByUsernameAsync(userName);
+                var username = User.GetUserName();//User.Identity.Name;
+                var user = await _accountService.GetUserByUsernameAsync(username);
                 return Ok(user);
             }
             catch (Exception ex)
@@ -50,6 +53,25 @@ namespace ProEventos.API.Controllers
             catch (Exception ex)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar usuário. Erro: {ex.Message}");
+            }
+        }
+        [HttpPut("UpdateUser")]
+       
+        public async Task<ActionResult> UpdateUser(UserUpdateDto update)
+        {
+            try
+            {
+                var user = await _accountService.GetUserByUsernameAsync(User.GetUserName());
+                if (user is null) return Unauthorized("Usuario não localizado");
+                var userRetorn = await _accountService.UpdateAccount(update);
+                if (userRetorn is  null)
+                    return NoContent();
+                return Ok(userRetorn);
+
+            }
+            catch (Exception ex)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar atualizar usuário. Erro: {ex.Message}");
             }
         }
         [HttpPost("login")]
